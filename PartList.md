@@ -53,15 +53,15 @@ The same as many other components in this list, the easiest and cheapest place t
 Here we have three main options each one with its advantages and downsides: LCD, OLED and E-ink. We will go through all of them and finally make a decision, but feel free to choose any other options, you really can't go wrong with any of these.
 
 ### E-ink
-These displays are made from ink and don't rely on electricity to maintain the image on the screen so it has an incredibly low power consumption which is great as the screen is one of the components that consumes a lot of energy at idle. However, it has a really bad refresh rate and can leave blurry marks that require refreshing the whole screen. It's a good option if you don't mind a slow refresh rate while typing.
+These displays are made from ink and don't rely on electricity to maintain the image on the screen so it has an **incredibly low power consumption** which is great as the screen is one of the components that consumes a lot of energy at idle. However, it has a really bad refresh rate and can leave **blurry marks** that require refreshing the whole screen. It's a good option if you don't mind a slow refresh rate while typing.
 
 ### LCD
-The advantages and disadvantages of this type of display depend on the backlight. If you take a LCD display with a backlight, you are seriously damaging the battery life of the device but you are getting the possibility to display various colors and a high frame rate. On the other hand, if you take a no backlight display, it will be more power efficient but you will sacrifice the colors.
+The advantages and disadvantages of this type of display depend on the backlight. If you take a LCD display with a backlight, you are **seriously damaging the battery life** of the device but you are getting the possibility to display **various colors and a high frame rate**. On the other hand, if you take a no backlight display, it will be more power efficient but you will sacrifice the colors.
 
 ### Monochrome OLED
-This is, for us, the clear winner, it has a great battery life when functioning because it only lights up the pixels that the display really needs. It can also be seen in the dark, a feature that neither the LCD with no backlight nor the E-ink have (you need to shine a light at the screen to see it).
+This is, for us, the clear winner, it has a **great battery life** when functioning because it only lights up the pixels that the display really needs. It can also be **seen in the dark**, a feature that neither the LCD with no backlight nor the E-ink have (you need to shine a light at the screen to see it).
 
-For the incredible balance OLED gives us between battery life and quality of the image, we will pick one as the display for the chatter. Feel free to find one that suits your budget and fulfills your expectations for a display. We will recommend a display between 1.5 and 2.5 inches and the SPI interface. Pixels typically vary from 128x128 to 128x64. Both will do the job perfectly   
+For the incredible balance OLED gives us between battery life and quality of the image, we will pick one as the display for the chatter. Feel free to find one that suits your budget and fulfills your expectations for a display. We will recommend a **display between 1.5 and 2.5 inches and the SPI interface. Pixels typically vary from 128x128 to 128x64**. Both will do the job perfectly   
 
 ## 5. Listening to your pal
 If you want to build the full chatter experience, it also requires a speaker for all the sound effects. 
@@ -79,12 +79,12 @@ We now have a list of simple and cheap components that we also need to complete 
 These devices will allow us to text our friend as well as selecting the different settings for our device and turning it on or off. 
 
 ### Cables and resistors
-Unless you are building it already soldered to a PCB, wire are an essential part of your project and dupont wires are the easiest to use with a prototyping board. Make sure to buy male-male, female-female and male-female wires so the wiring process is as easy as possible.
+Unless you are building it already soldered to a PCB, wire are an essential part of your project and **dupont wires** are the easiest to use with a prototyping board. Make sure to buy male-male, female-female and male-female wires so the wiring process is as easy as possible.
 
-We will also need resistors for all the buttons to act as a pull-down or pull-up resistor. You can buy a kit of different resistors or buy just 100k resistors. If you plan on digging deeper in the electronics world, take the kit of different resistors, as common will be an understatement for how much they appear in a circuit.
+We will also need resistors for all the buttons to act as a pull-down or pull-up resistor. You can buy a kit of different resistors or buy just **100k resistors**. If you plan on digging deeper in the electronics world, take the kit of different resistors, as common will be an understatement for how much they appear in a circuit.
 
 ### Prototyping board
-If you have ever used an Arduino or built any electronic circuit before, you know what a prototyping board or breadboard is. It is used to build circuits without the need of soldering to a PCB. Whether you are building it with a custom PCB or not, a breadboard is necessary to test all the components before final assembly. 
+If you have ever used an Arduino or built any electronic circuit before, you know what a **prototyping board or breadboard** is. It is used to build circuits without the need of soldering to a PCB. Whether you are building it with a custom PCB or not, a breadboard is necessary to test all the components before final assembly. 
 
 ### Where to buy?
 All these components are easy to find in every electronics shop as it is common to find them in any build. If you don't have access to these kinds of stores near you, you can always buy them from Aliexpress at a really low price. 
