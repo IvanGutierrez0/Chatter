@@ -31,3 +31,31 @@ As we have said before, the 18650 delivers a voltage that varies from 4.2V when 
 These modules take a range of input voltages and output one steady voltage fixed by the module. In this case we will be using the --completar-- module. It is also recommended to put a 100 nF capacitor to smoothen even further the output voltage.
 
 ### Where to buy all the powering devices?
+We have a lot of options to buy the components for powering the device and they will be pretty cheap (excluding the batteries).
+
+The 18650 are widely available on the different online sellers, nonetheless, you can also find them in any **electronics shop near you**. They are commonly used to power flashlights or portable fans so you won't have trouble finding one. Just check that the battery capacity advertised **doesn't exceed the 3500 mAh limit**.
+
+All the other parts (TP4056, --completar-- and case for the batteries) are also common on the internet but, as a personal recommendation, Aliexpress is a clear winner for these things. If you need these parts for a heavy-duty application it may not be a good option, but for our use is the best option if you take into account the price you are paying.
+
+If you experience **overheating** in your device you may also need to buy a heatsink and some thermal compound.
+
+## The LoRa module
+
+## Watching the messages
+
+## Other components
+We now have a list of simple and cheap components that we also need to complete our build. These components don't pack a lot of functionality but they are essential and it will impact both the look of the device and the development of it. 
+
+### Buttons and Switches
+These devices will allow us to text our friend as well as selecting the different settings for our device and turning it on or off. 
+
+### Cables and resistors
+Unless you are building it already soldered to a PCB, wire are an essential part of your project and dupont wires are the easiest to use with a prototyping board. Make sure to buy male-male, female-female and male-female wires so the wiring process is as easy as possible.
+
+We will also need resistors for all the buttons to act as a pull-down or pull-up resistor. You can buy a kit of different resistors or buy just 100k resistors. If you plan on digging deeper in the electronics world, take the kit of different resistors, as common will be an understatement for how much they appear in a circuit.
+
+### Prototyping board
+If you have ever used an Arduino or built any electronic circuit before, you know what a prototyping board or breadboard is. It is used to build circuits without the need of soldering to a PCB. Whether you are building it with a custom PCB or not, a breadboard is necessary to test all the components before final assembly. 
+
+### Where to buy?
+All these components are easy to find in every electronics shop as it is common to find them in any build. If you don't have access to these kinds of stores near you, you can always buy them from Aliexpress at a really low price. 
