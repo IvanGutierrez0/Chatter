@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <Wire.h>
-#include <ESP32Time>
-#include <LoRa.h">
+//#include <ESP32Time>
+#include <LoRaModule.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
