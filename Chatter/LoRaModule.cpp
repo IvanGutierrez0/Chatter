@@ -9,12 +9,12 @@ void LoRaModule::Optimize(){
   OptimizeError();
 }
 
-bool LoRaModule::SendMessage(const char buffer[255], byte size);
+bool LoRaModule::SendMessage(const char *buffer, byte size);
 bool LoRaModule::MessagePending();
-byte LoRaModule::ReceiveMessage(char buffer[255]);
+byte LoRaModule::ReceiveMessage(char *buffer);
 
 /*-------------------------------Private methods------------------------------------*/
-float LoRaModule::GetAverage(const int v[HISTORY_SIZE]){
+float LoRaModule::GetAverage(const int *v){
   float aux = 0;
 
   for(byte i = 0; i < HISTORY_SIZE; i++){
@@ -30,12 +30,12 @@ void LoRaModule::OptimizeSNR();
 
 void LoRaModule::OptimizeError();
 
-void LoRaModule::Encrypt(char buffer[255], byte size){
+void LoRaModule::Encrypt(char *buffer, byte size){
   for(byte i = 0; i < size; i++){
     buffer[i] ^= PASSWORD[i];
   }
 }
 
-void LoRaModule::Decrypt(char buffer[255], byte size){
-  Encrypt(buffer, size);
+void LoRaModule::Decrypt(char *buffer, byte size){
+  Encrypt(&buffer, size);
 }

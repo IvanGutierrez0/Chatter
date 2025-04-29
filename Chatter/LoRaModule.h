@@ -52,6 +52,7 @@ private:
   int previousRSSI[HISTORY_SIZE];
   int previousSNR[HISTORY_SIZE];
   int previousError[HISTORY_SIZE];
+  int size = 0;
 
   /*
   Variables to store the current parameters for the signal.
@@ -69,7 +70,7 @@ private:
     @param v the vector containing the values
     @return the average of the values in v
   */
-  float GetAverage(const int v[HISTORY_SIZE]);
+  float GetAverage(const int *v);
 
   /**
     @brief Function to optimize the signal based on the RSSI data
@@ -89,12 +90,12 @@ private:
   /**
     @brief Function to encode the password
   */
-  void Encrypt(char buffer[255], byte size);
+  void Encrypt(char *buffer, byte size);
 
   /**
     @brief decode de message based on the password shared
   */
-  void Decrypt(char buffer[255], byte size);
+  void Decrypt(char *buffer, byte size);
 
 
 public:
@@ -115,7 +116,7 @@ public:
     @param size size of the message to send
     @return true if the message was successfully sent and false otherwise
   */
-  bool SendMessage(const char buffer[255], byte size);
+  bool SendMessage(const char *buffer, byte size);
 
   /**
     @brief Check if there is a message to be received
@@ -128,7 +129,7 @@ public:
     @param buffer the buffer where the message will be stored
     @return the size of the message in bytes
   */
-  byte ReceiveMessage(char buffer[255]);
+  byte ReceiveMessage(char *buffer);
 };
 
 #endif
