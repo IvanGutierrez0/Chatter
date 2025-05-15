@@ -7,7 +7,9 @@
 /*
   Declare all the constant and default values
 */
-#define DEVICE_ID 0                 //Device ID in case you want more than one chatter
+#define DEVICE_ID '0'               //Device ID in case you want more than one chatter
+#define MAX_PACKET 255              //Max size of a packet to be sent
+#define HISTORY_SIZE 8  
 
 /*------------LoRa default values------------------*/
 #define FREQUENCY 433E6             //Frecuency of the radio waves used (depends on your device)
@@ -39,9 +41,6 @@ const byte PASSWORD[255] = {
 
 class LoRaModule{
 private:
-  //SPI interface to use
-  SPIClass _spi;
-
   //Count of all the messages received
   unsigned long messagesReceived = 0;
 
@@ -52,7 +51,7 @@ private:
   int previousRSSI[HISTORY_SIZE];
   int previousSNR[HISTORY_SIZE];
   int previousError[HISTORY_SIZE];
-  int size = 0;
+  byte size;
 
   /*
   Variables to store the current parameters for the signal.
@@ -70,7 +69,7 @@ private:
     @param v the vector containing the values
     @return the average of the values in v
   */
-  float GetAverage(const int *v);
+  float GetAverage(const int* v);
 
   /**
     @brief Function to optimize the signal based on the RSSI data
@@ -90,20 +89,28 @@ private:
   /**
     @brief Function to encode the password
   */
-  void Encrypt(char *buffer, byte size);
+  void Encrypt(unsigned char* buffer, byte size);
 
   /**
     @brief decode de message based on the password shared
   */
-  void Decrypt(char *buffer, byte size);
+  void Decrypt(char* buffer, byte size);
 
 
 public:
+  //flag to store if a message has been received and not read
+  static bool messagePending;
+
   /**
     @brief The class constructor
     @param spi the spi interface to use
   */
-  LoRaModule(const SPIClass &spi);
+  LoRaModule(SPIClass &spi);
+
+  /**
+    @brief The class constructor
+  */
+  ~LoRaModule();
 
   /**
     @brief Optimize the signal based on the data received (assuming the other device is in the same condition)
@@ -116,7 +123,7 @@ public:
     @param size size of the message to send
     @return true if the message was successfully sent and false otherwise
   */
-  bool SendMessage(const char *buffer, byte size);
+  bool SendMessage(const char* buffer, byte size);
 
   /**
     @brief Check if there is a message to be received
@@ -129,7 +136,37 @@ public:
     @param buffer the buffer where the message will be stored
     @return the size of the message in bytes
   */
-  byte ReceiveMessage(char *buffer);
+  byte ReceiveMessage(char* buffer);
+
+  /**
+    @brief Puts radio in sleep mode
+  */
+  void Sleep();
+
+  /**
+    @brief Puts radio in idle mode
+  */
+  void Idle();
 };
+
+/**
+ @brief Activates the transmission mode of the radio
+*/
+void TXMode();
+
+/**
+  @brief Activates the receive mode of the radio
+*/
+void RXMode();
+
+/**
+  @brief Interrupt function to reactivate the receive mode after a massage has been sent
+*/
+void onTxDone();
+
+/**
+  @brief Interrupt function to activate a flag when a message has been received
+*/
+void onReceive(int packetSize);
 
 #endif
