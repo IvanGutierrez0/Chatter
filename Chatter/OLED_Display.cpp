@@ -20,7 +20,13 @@ OLED_Display::OLED_Display(){
   display->setCursor(0, 0);
   display->cp437(true);
 
-  for(uint8_t i = 0; i < 21; i++) statusBuffer[i] = ' '; 
+  for(uint8_t i = 0; i < MAX_COLS; i++) statusBuffer[i] = ' ';
+
+  for(uint8_t j = 0; j < MAX_SCROLL_LINES; j++){
+    for(uint8_t i = 0; i < MAX_COLS; i++) screenBuffer[j][i] = 'A' + j; 
+  }
+
+  for(uint8_t i = 0; i < MAX_MESSAGE_SIZE; i++) messageBuffer[i] = ' '; 
 }
 
 void OLED_Display::updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery){
@@ -95,16 +101,38 @@ void OLED_Display::updateBattery(uint8_t battery){
   }
 }
 
-void OLED_Display::writeMessage(const char *message, uint8_t size){
+bool OLED_Display::userWrite(char c){
+  bool messageWritten = false;
 
+  if(messageSize < MAX_MESSAGE_SIZE){
+    messageBuffer[messageSize] = c;
+    messageSize++;
+
+    messageWritten = true;
+  }
+
+  return messageWritten;
+}
+
+void OLED_Display::userClear(){
+  messageSize = 0;
+}
+
+
+void OLED_Display::writeMessage(const char* message, uint8_t size, bool isUser){
+  
 }
 
 void OLED_Display::scrollUp(){
-
+  if(currentReadLine > 0){
+    currentReadLine--;
+  }
 }
 
 void OLED_Display::scrollDown(){
-
+  if(currentReadLine < (MAX_SCROLL_LINES - MAX_ROWS)){
+    currentReadLine++;
+  }
 }
 
 void OLED_Display::clear(){
@@ -124,10 +152,22 @@ void OLED_Display::showDisplay(){
   display->writeFastHLine(0, 8, SCREEN_WIDTH, SSD1306_WHITE);
 
   //Display message buffer
-  display->setCursor(0,9);
+  display->setCursor(0,12);
 
-  for(uint8_t i = 0; i < MAX_ROWS; i++){
-    display->write(screenBuffer[i]);
+  for(uint8_t i = currentReadLine; (i - currentReadLine) < MAX_ROWS; i++){
+    for(uint8_t j = 0; j < MAX_COLS; j++){
+      display->write(screenBuffer[i][j]);
+    }
+  }
+
+  //Display the message buffer
+  display->writeFastHLine(0, 55, SCREEN_WIDTH, SSD1306_WHITE);
+  display->setCursor(0,57);
+
+  int8_t i = messageSize - MAX_COLS;
+
+  for(i = ((i < 0) ? 0 : i); i < messageSize; i++){
+    display->write(messageBuffer[i]);
   }
 
   //Update the display
