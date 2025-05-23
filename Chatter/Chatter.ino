@@ -14,10 +14,14 @@
 OLED_Display screen;
 
 void setup() {
-  screen.updateDisplayStatus("12:37", 3, 1);
-  delay(2000);
-  screen.updateDisplayStatus("12:41", 4, 2);
+
 }
 
 void loop() {
+  screen.updateDisplayStatus("12:37", 3, 1);
+  screen.showDisplay();
+  delay(2000);
+  screen.updateDisplayStatus("12:41", 4, 2);
+  screen.showDisplay();
+  delay(2000);
 }

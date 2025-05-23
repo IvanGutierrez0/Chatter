@@ -8,6 +8,7 @@
 
 #define MAX_ROWS 7
 #define MAX_COLS 21
+#define MAX_SCROLL_LINES 32
 
 #define HSPI_SCK 14
 #define HSPI_SDA 13
@@ -23,7 +24,9 @@ private:
   SPIClass *hspi;
   Adafruit_SSD1306 *display;
 
-  char screenBuffer[MAX_ROWS][MAX_COLS];
+  char screenBuffer[MAX_SCROLL_LINES][MAX_COLS];
+  int currentWriteLine = 0;
+  int currentReadLine = 0;
 
   /*
   Format {HH:MM           SS BB}
@@ -50,6 +53,10 @@ public:
   void scrollUp();
 
   void scrollDown();
+
+  void clear();
+
+  void showDisplay();
 };
 
 #endif

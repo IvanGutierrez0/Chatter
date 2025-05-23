@@ -1,3 +1,4 @@
+#include "Adafruit_SSD1306.h"
 #include "OLED_Display.h"
 
 OLED_Display::OLED_Display(){
@@ -7,7 +8,6 @@ OLED_Display::OLED_Display(){
   hspi->begin();
   
   if(!display->begin(SSD1306_SWITCHCAPVCC)) {
-    //Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
   
@@ -29,26 +29,15 @@ void OLED_Display::updateDisplayStatus(const String& time, uint8_t signal, uint8
   updateSignal(signal);
 
   updateBattery(battery);
-
-  display->writeFastHLine(0, 9, 128, SSD1306_WHITE);
-
-  display->display();
 }
 
 void OLED_Display::updateTime(const String& time){
-  display->setCursor(0, 0);
-  
   for(uint8_t i = 0; i < 5; i++){
     statusBuffer[i] = time[i];
   }
-
-  display->write(statusBuffer);
-  display->display();
 }
 
 void OLED_Display::updateSignal(uint8_t signal){
-  display->setCursor(0, 0);
-  
   switch(signal){
     case 0:
       statusBuffer[16] = ' ';
@@ -58,7 +47,7 @@ void OLED_Display::updateSignal(uint8_t signal){
     
     case 1:
       statusBuffer[16] = 248;
-      statusBuffer[17] = ' ';
+      statusBuffer[17] = 249;
       statusBuffer[18] = ' ';
     break;
     
@@ -80,38 +69,30 @@ void OLED_Display::updateSignal(uint8_t signal){
       statusBuffer[18] = ' ';
     break;
   }
-
-  display->write(statusBuffer);
-  display->display();
 }
 
 void OLED_Display::updateBattery(uint8_t battery){
-  display->setCursor(0, 0);
-  
   switch(battery){
     case 0:
-      statusBuffer[19] = (char)0;
-      statusBuffer[20] = 1;
+      statusBuffer[19] = 1;
+      statusBuffer[20] = 2;
     break;
     
     case 1:
-      statusBuffer[19] = 2;
-      statusBuffer[20] = 3;
+      statusBuffer[19] = 3;
+      statusBuffer[20] = 4;
     break;
     
     case 2:
-      statusBuffer[19] = 4;
-      statusBuffer[20] = 5;
+      statusBuffer[19] = 5;
+      statusBuffer[20] = 6;
     break;
     
     case 3:
-      statusBuffer[19] = 6;
-      statusBuffer[20] = 7;
+      statusBuffer[19] = 7;
+      statusBuffer[20] = 8;
     break;
   }
-
-  display->write(statusBuffer);
-  display->display();
 }
 
 void OLED_Display::writeMessage(const char *message, uint8_t size){
@@ -124,4 +105,31 @@ void OLED_Display::scrollUp(){
 
 void OLED_Display::scrollDown(){
 
+}
+
+void OLED_Display::clear(){
+  display->clearDisplay();
+}
+
+void OLED_Display::showDisplay(){
+  clear();
+
+  //Display status buffer
+  display->setCursor(0,0);
+  
+  for(uint8_t i = 0; i < MAX_COLS; i++){
+    display->write(statusBuffer[i]);
+  }
+  
+  display->writeFastHLine(0, 8, SCREEN_WIDTH, SSD1306_WHITE);
+
+  //Display message buffer
+  display->setCursor(0,9);
+
+  for(uint8_t i = 0; i < MAX_ROWS; i++){
+    display->write(screenBuffer[i]);
+  }
+
+  //Update the display
+  display->display();
 }
