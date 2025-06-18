@@ -3,21 +3,24 @@
 #include <ESP32Time.h>
 #include <LoRaModule.h>
 #include "OLED_Display.h"
+#include <string.h>
 
 OLED_Display screen;
 
-void setup() {
+ESP32Time rtc(3600);  // offset in seconds GMT+1
 
+String womp;
+
+void setup() {
+  rtc.setTime(0, 14, 12, 24, 5, 2025);
 }
 
 void loop() {
-  screen.updateDisplayStatus("12:37", 3, 1);
-  screen.showDisplay();
-  delay(200);
-  screen.updateDisplayStatus("12:41", 4, 2);
-  screen.showDisplay();
-  screen.userWrite('W');
-  delay(200);
+  womp = rtc.getTime();
+  womp.remove(5);
 
-  screen.scrollDown();
+  screen.updateTime(womp);
+  screen.showDisplay();
+  delay(200);
+  delay(200);
 }
