@@ -1,5 +1,8 @@
+#include "LoRa.h"
 #include "LoRaModule.h"
 #include <cstring>
+
+volatile byte LoRaModule::packetSize = 0;
 
 LoRaModule::LoRaModule(SPIClass &spi) : _spi(spi){
 	packetSize = 0;
@@ -17,7 +20,10 @@ bool LoRaModule::begin() {
     return false;
   }
 
+  LoRa.onReceive(LoRaModule::onReceive);
+
   LoRa.setTxPower(TX_POWER);
+
 	RXMode();
   
   return true;
@@ -30,21 +36,24 @@ bool LoRaModule::SendMessage(const unsigned char* buffer, byte size){
   memcpy(bufferCopy+1, buffer, size - 1);*/
 
   TXMode();
+
   LoRa.beginPacket();
   LoRa.write(buffer, size);
+  LoRa.endPacket();
 
-  return LoRa.endPacket();
+  RXMode();
+
+  return true;
 }
 
 bool LoRaModule::MessagePending(){
-	packetSize = LoRa.parsePacket();
-
 	return packetSize;
 }
 
 byte LoRaModule::ReceiveMessage(unsigned char* buffer){
+  byte i;
+
   if(packetSize){
-    byte i;
     for(i = 0; i < packetSize && LoRa.available(); i++){
       buffer[i] = (char)LoRa.read();
     }
@@ -53,8 +62,9 @@ byte LoRaModule::ReceiveMessage(unsigned char* buffer){
   }
 
   RXMode();
+  packetSize = 0;
 
-  return packetSize;
+  return i;
 }
 
 void LoRaModule::Sleep(){
@@ -73,4 +83,8 @@ void LoRaModule::RXMode(){
 void LoRaModule::TXMode(){
   LoRa.idle();
   LoRa.disableInvertIQ();
+}
+
+void LoRaModule::onReceive(int size){
+  packetSize = size;
 }

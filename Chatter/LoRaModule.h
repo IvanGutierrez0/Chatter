@@ -28,7 +28,7 @@ private:
   SPIClass &_spi;
 
   //Received packet size
-  byte packetSize;
+  static volatile byte packetSize;
 
 
 public:
@@ -88,6 +88,12 @@ public:
 	  @brief Activates the receive mode of the radio
 	*/
 	void RXMode();
+
+  /**
+    @brief Callback funtion for a newly arrived message
+    @param size Number of characters on the message
+  */
+  static void onReceive(int size);
 };
 
 #endif
