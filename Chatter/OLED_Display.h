@@ -91,7 +91,7 @@ public:
     @param size size of the message
     @param isUser true if the message was sent by the user and false otherwise
   */
-  void writeMessage(const char* message, uint8_t size, bool isUser = false);
+  void writeMessage(const unsigned char* message, uint8_t size, bool isUser = false);
 
   /*
     @param scroll the display up one line

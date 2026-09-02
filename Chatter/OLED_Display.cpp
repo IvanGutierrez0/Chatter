@@ -21,13 +21,13 @@ OLED_Display::OLED_Display(){
   display->setCursor(0, 0);
   display->cp437(true);
 
-  for(uint8_t i = 0; i < MAX_COLS; i++) statusBuffer[i] = ' ';
+  for(uint8_t i = 0; i < MAX_COLS; i++) statusBuffer[i] = '\0';
 
   for(uint8_t j = 0; j < MAX_SCROLL_LINES; j++){
-    for(uint8_t i = 0; i < MAX_COLS; i++) screenBuffer[j][i] = 'A' + j; 
+    for(uint8_t i = 0; i < MAX_COLS; i++) screenBuffer[j][i] = '\0'; 
   }
 
-  for(uint8_t i = 0; i < MAX_MESSAGE_SIZE; i++) messageBuffer[i] = ' '; 
+  for(uint8_t i = 0; i < MAX_MESSAGE_SIZE; i++) messageBuffer[i] = '\0'; 
 }
 
 void OLED_Display::updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery){
@@ -120,10 +120,11 @@ void OLED_Display::userClear(){
 }
 
 
-void OLED_Display::writeMessage(const char* message, uint8_t size, bool isUser){
-  for (int i = 0; i < size; i++){
-    messageBuffer[i] = message[i];
+void OLED_Display::writeMessage(const unsigned char* message, uint8_t size, bool isUser){
+  for(int i = 0; i < size || i < MAX_COLS; i++){
+    screenBuffer[currentWriteLine][i] = (char)message[i];
   }
+  currentWriteLine++;
 }
 
 void OLED_Display::scrollUp(){
