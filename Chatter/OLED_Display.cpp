@@ -14,6 +14,7 @@ OLED_Display::OLED_Display(){
   display->display();
   delay(2000);
   display->clearDisplay();
+  display->display();
 
   display->setTextSize(1);
   display->setTextColor(SSD1306_WHITE);
@@ -120,7 +121,9 @@ void OLED_Display::userClear(){
 
 
 void OLED_Display::writeMessage(const char* message, uint8_t size, bool isUser){
-  
+  for (int i = 0; i < size; i++){
+    messageBuffer[i] = message[i];
+  }
 }
 
 void OLED_Display::scrollUp(){
@@ -137,10 +140,11 @@ void OLED_Display::scrollDown(){
 
 void OLED_Display::clear(){
   display->clearDisplay();
+  display->display();
 }
 
 void OLED_Display::showDisplay(){
-  clear();
+  display->clearDisplay();
 
   //Display status buffer
   display->setCursor(0,0);

@@ -7,20 +7,30 @@
 
 OLED_Display screen;
 
-ESP32Time rtc(3600);  // offset in seconds GMT+1
+SPIClass vspi(VSPI);
+LoRaModule lora(vspi);
 
-String womp;
+unsigned char buffer[256];
 
-void setup() {
-  rtc.setTime(0, 14, 12, 24, 5, 2025);
+void setup(){
+  //Initialize serial comunication
+  Serial.begin(9600);
+  while (!Serial);
+
+  //Initialize teh SPI Interface for the LoRa module
+  vspi.begin(18, 19, 23, 5);
+  
+  //Initialize the LoRa module
+  if (!lora.begin()) {
+    Serial.println("LoRa initialization failed!");
+    while (1);
+  }
+  Serial.println("LoRa initialized successfully!");
 }
 
 void loop() {
-  womp = rtc.getTime();
-  womp.remove(5);
-
-  screen.updateTime(womp);
-  screen.showDisplay();
-  delay(200);
-  delay(200);
+  if(lora.MessagePending()){
+    lora.ReceiveMessage(buffer);
+    Serial.println((char*)buffer);
+  }
 }
