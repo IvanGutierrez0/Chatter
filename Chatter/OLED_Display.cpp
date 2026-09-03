@@ -151,7 +151,7 @@ void OLED_Display::showDisplay(){
   printDisplayStatus();
 
   
-/*
+
   //Display message buffer
   display->setCursor(0,12);
 
@@ -170,7 +170,7 @@ void OLED_Display::showDisplay(){
   for(i = ((i < 0) ? 0 : i); i < messageSize; i++){
     display->write(messageBuffer[i]);
   }
-*/
+
   //Update the display
   display->display();
 }

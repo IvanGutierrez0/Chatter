@@ -54,20 +54,6 @@ private:
   uint8_t _signal; 
   uint8_t _battery;
 
-public:
-  /*
-    @brief The class constructor
-  */
-  OLED_Display();
-
-  /*
-    @brief Updates the variables of the status bar of the screen
-    @param time a string containing the current time
-    @param signal a number between 0 to 2 indicating the signal integrity
-    @param battery a number between 0 to 3 indicating the battery level
-  */
-  void updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery);
-
   /*
     @brief Prints the updated variables in the status bar of the screen
   */
@@ -90,7 +76,21 @@ public:
     @param battery a number between 0 to 3 indicating the battery level
   */
   void printBattery(uint8_t battery);
-  
+
+public:
+  /*
+    @brief The class constructor
+  */
+  OLED_Display();
+
+  /*
+    @brief Updates the variables of the status bar of the screen
+    @param time a string containing the current time
+    @param signal a number between 0 to 2 indicating the signal integrity
+    @param battery a number between 0 to 3 indicating the battery level
+  */
+  void updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery);
+
   /*
     @brief rites one character in the message buffer
     @param c character to be written

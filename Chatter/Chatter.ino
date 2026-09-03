@@ -33,6 +33,9 @@ void setup(){
     while (1);
   }
   Serial.println("LoRa initialized successfully!");
+
+  screen.updateDisplayStatus("12:23", 2, 3);
+  screen.showDisplay();
 }
 
 void loop() {
