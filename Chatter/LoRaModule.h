@@ -8,6 +8,8 @@
   Declare all the constant and default values
 */
 #define MAX_PACKET 255              //Max size of a packet to be sent
+#define BUFFER_COLS 32              //Max message size
+#define BUFFER_ROWS 16              //Maxx capacitiy for the buffer
 
 /*----------------------Pinout----------------------*/
 #define CS 5				//Chip select pin
@@ -28,8 +30,13 @@ private:
   SPIClass &_spi;
 
   //Received packet size
-  static volatile byte packetSize;
+  inline static volatile byte packetSize[BUFFER_ROWS];
 
+  //Number of messages waiting to be read
+  inline static volatile byte messagesPending = 0;
+
+  //Buffer 
+  inline static volatile unsigned char _buffer[BUFFER_ROWS][BUFFER_COLS];
 
 public:
 	/**
@@ -60,7 +67,7 @@ public:
     @brief Check if there is a message to be received
     @return true if a message was found and false otherwise
   */
-  bool MessagePending();
+  byte MessagePending();
 
   /**
     @brief Receive a message through the LoRa module

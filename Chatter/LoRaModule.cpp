@@ -2,10 +2,9 @@
 #include "LoRaModule.h"
 #include <cstring>
 
-volatile byte LoRaModule::packetSize = 0;
+//volatile byte LoRaModule::messagesPending = 0;
 
 LoRaModule::LoRaModule(SPIClass &spi) : _spi(spi){
-	packetSize = 0;
 }
 
 LoRaModule::~LoRaModule(){
@@ -46,25 +45,26 @@ bool LoRaModule::SendMessage(const unsigned char* buffer, byte size){
   return true;
 }
 
-bool LoRaModule::MessagePending(){
-	return packetSize;
+byte LoRaModule::MessagePending(){
+	return messagesPending;
 }
 
 byte LoRaModule::ReceiveMessage(unsigned char* buffer){
-  byte i;
+  byte j = 0;
 
-  if(packetSize){
-    for(i = 0; i < packetSize && LoRa.available(); i++){
-      buffer[i] = (char)LoRa.read();
+  if(messagesPending){
+    messagesPending--;
+
+    for(j = 0; j < packetSize[messagesPending]; j++){
+      buffer[j] = _buffer[messagesPending][j];
     }
 
-    buffer[i] = '\0';
+    buffer[j] = '\0';
+
+    packetSize[messagesPending] = 0;
   }
 
-  RXMode();
-  packetSize = 0;
-
-  return i;
+  return j;
 }
 
 void LoRaModule::Sleep(){
@@ -86,5 +86,17 @@ void LoRaModule::TXMode(){
 }
 
 void LoRaModule::onReceive(int size){
-  packetSize = size;
+  if(messagesPending < BUFFER_ROWS && size > 0){
+    byte j;
+
+    packetSize[messagesPending] = size;
+    
+    for(j = 0; j < size && LoRa.available() && j < BUFFER_COLS - 1; j++){
+      _buffer[messagesPending][j] = (unsigned char)LoRa.read();
+    }
+
+    _buffer[messagesPending][j] = '\0';
+
+    messagesPending++;
+  }
 }

@@ -17,7 +17,7 @@ OLED_Display screen;
 SPIClass vspi(VSPI);
 LoRaModule lora(vspi);
 
-unsigned char buffer[256];
+unsigned char buffer[32];
 
 void setup(){
   //Initialize serial comunication
