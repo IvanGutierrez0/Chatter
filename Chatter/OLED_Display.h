@@ -8,7 +8,7 @@
 
 #include <Fonts/Picopixel_custom.h> //Para fuente custom
 
-#define MAX_ROWS 5
+#define MAX_ROWS 6
 #define MAX_COLS 21
 #define MAX_SCROLL_LINES 32
 #define MAX_MESSAGE_SIZE 200

@@ -50,7 +50,7 @@ void OLED_Display::printDisplayStatus(){
   display->setCursor(117, 5);
   printBattery(_battery);
 
-  display->writeFastHLine(0, 8, SCREEN_WIDTH, SSD1306_WHITE);
+  display->writeFastHLine(0, 7, SCREEN_WIDTH, SSD1306_WHITE);
 }
 
 void OLED_Display::printTime(const String& time){
@@ -150,20 +150,20 @@ void OLED_Display::showDisplay(){
 
   printDisplayStatus();
 
-  
-
   //Display message buffer
-  display->setCursor(0,12);
+  display->setCursor(0,14);
 
   for(uint8_t i = currentReadLine; (i - currentReadLine) < MAX_ROWS; i++){
     for(uint8_t j = 0; j < MAX_COLS; j++){
       display->write(screenBuffer[i][j]);
     }
+
+    display->write('\n');
   }
 
   //Display the message buffer
-  display->writeFastHLine(0, 55, SCREEN_WIDTH, SSD1306_WHITE);
-  display->setCursor(0,57);
+  display->writeFastHLine(0, 54, SCREEN_WIDTH, SSD1306_WHITE);
+  display->setCursor(0,62);
 
   int8_t i = messageSize - MAX_COLS;
 
