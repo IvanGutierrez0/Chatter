@@ -10,6 +10,8 @@ OLED_Display::OLED_Display(){
   if(!display->begin(SSD1306_SWITCHCAPVCC)) {
     for(;;); // Don't proceed, loop forever
   }
+
+  display->setFont(&Picopixel_custom); //Fuente custom
   
   display->display();
   delay(2000);
@@ -21,83 +23,82 @@ OLED_Display::OLED_Display(){
   display->setCursor(0, 0);
   display->cp437(true);
 
-  for(uint8_t i = 0; i < MAX_COLS; i++) statusBuffer[i] = '\0';
-
   for(uint8_t j = 0; j < MAX_SCROLL_LINES; j++){
     for(uint8_t i = 0; i < MAX_COLS; i++) screenBuffer[j][i] = '\0'; 
   }
 
   for(uint8_t i = 0; i < MAX_MESSAGE_SIZE; i++) messageBuffer[i] = '\0'; 
+
+  _time = "XX:XX";
+  _signal = -1;
+  _battery = -1;
 }
 
 void OLED_Display::updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery){
-  updateTime(time);
-
-  updateSignal(signal);
-
-  updateBattery(battery);
+  _time = time;
+  _signal = signal;
+  _battery = battery;
 }
 
-void OLED_Display::updateTime(const String& time){
+void OLED_Display::printDisplayStatus(){
+  display->setCursor(0, 5);
+  printTime(_time);
+
+  display->setCursor(109, 5);
+  printSignal(_signal);
+
+  display->setCursor(117, 5);
+  printBattery(_battery);
+
+  display->writeFastHLine(0, 8, SCREEN_WIDTH, SSD1306_WHITE);
+}
+
+void OLED_Display::printTime(const String& time){
   for(uint8_t i = 0; i < 5; i++){
-    statusBuffer[i] = time[i];
+    display->write(time[i]);
   }
 }
 
-void OLED_Display::updateSignal(uint8_t signal){
+void OLED_Display::printSignal(uint8_t signal){
   switch(signal){
     case 0:
-      statusBuffer[16] = ' ';
-      statusBuffer[17] = ' ';
-      statusBuffer[18] = ' ';
+      display->write(ICON_NET_MIN);
     break;
     
     case 1:
-      statusBuffer[16] = 248;
-      statusBuffer[17] = 249;
-      statusBuffer[18] = ' ';
+      display->write(ICON_NET_MID);
     break;
     
     case 2:
-      statusBuffer[16] = 250;
-      statusBuffer[17] = 251;
-      statusBuffer[18] = ' ';
-    break;
-    
-    case 3:
-      statusBuffer[16] = 252;
-      statusBuffer[17] = 253;
-      statusBuffer[18] = ' ';
+      display->write(ICON_NET_MAX);
     break;
 
-    case 4:
-      statusBuffer[16] = 254;
-      statusBuffer[17] = 255;
-      statusBuffer[18] = ' ';
+    default:
+      display->write("X");
     break;
   }
 }
 
-void OLED_Display::updateBattery(uint8_t battery){
+void OLED_Display::printBattery(uint8_t battery){
   switch(battery){
     case 0:
-      statusBuffer[19] = 1;
-      statusBuffer[20] = 2;
+      display->write(ICON_BAT_EMPT);
     break;
     
     case 1:
-      statusBuffer[19] = 3;
-      statusBuffer[20] = 4;
+      display->write(ICON_BAT_MID_EMPT);
     break;
     
     case 2:
-      statusBuffer[19] = 5;
-      statusBuffer[20] = 6;
+      display->write(ICON_BAT_MID_FULL);
     break;
     
     case 3:
-      statusBuffer[19] = 7;
-      statusBuffer[20] = 8;
+      display->write(ICON_BAT_FULL);
+    break;
+
+    default:
+      display->write("X");
     break;
   }
 }
@@ -147,15 +148,10 @@ void OLED_Display::clear(){
 void OLED_Display::showDisplay(){
   display->clearDisplay();
 
-  //Display status buffer
-  display->setCursor(0,0);
-  
-  for(uint8_t i = 0; i < MAX_COLS; i++){
-    display->write(statusBuffer[i]);
-  }
-  
-  display->writeFastHLine(0, 8, SCREEN_WIDTH, SSD1306_WHITE);
+  printDisplayStatus();
 
+  
+/*
   //Display message buffer
   display->setCursor(0,12);
 
@@ -174,7 +170,7 @@ void OLED_Display::showDisplay(){
   for(i = ((i < 0) ? 0 : i); i < messageSize; i++){
     display->write(messageBuffer[i]);
   }
-
+*/
   //Update the display
   display->display();
 }

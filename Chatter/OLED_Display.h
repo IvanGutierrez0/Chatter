@@ -6,6 +6,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#include <Fonts/Picopixel_custom.h> //Para fuente custom
+
 #define MAX_ROWS 5
 #define MAX_COLS 21
 #define MAX_SCROLL_LINES 32
@@ -21,6 +23,15 @@
 const uint8_t SCREEN_WIDTH = 128; // OLED display width, in pixels
 const uint8_t SCREEN_HEIGHT = 64; // OLED display height, in pixels
 
+//Icons hex code (write to display with display.write())
+#define ICON_BAT_FULL 0x7F
+#define ICON_BAT_MID_FULL 0x80
+#define ICON_BAT_MID_EMPT 0x81
+#define ICON_BAT_EMPT 0x82
+#define ICON_NET_MAX 0x83
+#define ICON_NET_MID 0x84
+#define ICON_NET_MIN 0x85
+
 class OLED_Display{
 private:
   //Spi interface to use
@@ -34,12 +45,14 @@ private:
   uint8_t currentWriteLine = 0;
   uint8_t currentReadLine = 0;
 
-  //Buffer to store the status bar
-  char statusBuffer[MAX_COLS];
-
   //Buffer to store the message that is being written
   char messageBuffer[MAX_MESSAGE_SIZE];
   uint8_t messageSize = 0;
+
+  //Attributes to store the status displayed on top (time, network quality, battery)
+  String _time; 
+  uint8_t _signal; 
+  uint8_t _battery;
 
 public:
   /*
@@ -48,30 +61,35 @@ public:
   OLED_Display();
 
   /*
-    @brief Updates the status bar of the screen
+    @brief Updates the variables of the status bar of the screen
     @param time a string containing the current time
-    @param signal a number between 0 to 4 indicating the signal integrity
+    @param signal a number between 0 to 2 indicating the signal integrity
     @param battery a number between 0 to 3 indicating the battery level
   */
   void updateDisplayStatus(const String& time, uint8_t signal, uint8_t battery);
 
   /*
-    @brief Updates the time in the status bar
+    @brief Prints the updated variables in the status bar of the screen
+  */
+  void printDisplayStatus();
+
+  /*
+    @brief Prints the time in the status bar
     @param time a string containing the current time
   */
-  void updateTime(const String& time);
+  void printTime(const String& time);
 
   /*
-    @brief Updates the signal integrity in the status bar
+    @brief Prints the signal integrity in the status bar
     @param signal a number between 0 to 4 indicating the signal integrity
   */
-  void updateSignal(uint8_t signal);
+  void printSignal(uint8_t signal);
 
   /*
-    @brief Updates the battery level in the status bar
+    @brief Prints the battery level in the status bar
     @param battery a number between 0 to 3 indicating the battery level
   */
-  void updateBattery(uint8_t battery);
+  void printBattery(uint8_t battery);
   
   /*
     @brief rites one character in the message buffer
