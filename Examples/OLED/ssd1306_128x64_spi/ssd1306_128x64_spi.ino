@@ -77,11 +77,11 @@ void loop() {
 
   // send packet
   LoRa.beginPacket();
-  LoRa.print("hello ");
+  LoRa.print("qh");
   LoRa.print(counter);
   LoRa.endPacket();
 
   counter++;
 
-  delay(5000);
+  delay(1000);
 }
