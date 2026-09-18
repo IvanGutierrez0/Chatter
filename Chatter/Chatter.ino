@@ -1,8 +1,9 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <ESP32Time.h>
-#include <LoRaModule.h>
+#include "LoRaModule.h"
 #include "OLED_Display.h"
+#include "KeypadManager.h"
 #include <string.h>
 
 //Pinout for LoRa SPI interface
@@ -39,10 +40,18 @@ void setup(){
 }
 
 void loop() {
-  if(lora.MessagePending()){
+  /*if(lora.MessagePending()){
     byte size = lora.ReceiveMessage(buffer);
     Serial.println((char*)buffer);
     screen.writeMessage(buffer, size);
+    screen.showDisplay();
+  }*/
+
+  char key = customKeypad.getKey();
+  
+  if (key){
+    Serial.println(key);
+    screen.userWrite(key);
     screen.showDisplay();
   }
 }
