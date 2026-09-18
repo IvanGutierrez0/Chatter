@@ -8,7 +8,7 @@ OLED_Display::OLED_Display(){
   hspi->begin();
   
   if(!display->begin(SSD1306_SWITCHCAPVCC)) {
-    for(;;); // Don't proceed, loop forever
+    for(;;);
   }
 
   display->setFont(&Picopixel_custom); //Fuente custom
