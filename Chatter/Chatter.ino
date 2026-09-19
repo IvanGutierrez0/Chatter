@@ -18,6 +18,8 @@ OLED_Display screen;
 SPIClass vspi(VSPI);
 LoRaModule lora(vspi);
 
+KeypadManager keyman;
+
 unsigned char buffer[32];
 
 void setup(){
@@ -29,11 +31,11 @@ void setup(){
   vspi.begin(VSCK, VMISO, VMOSI, VCS);
   
   //Initialize the LoRa module
-  if (!lora.begin()) {
+  /*if (!lora.begin()) {
     Serial.println("LoRa initialization failed!");
     while (1);
   }
-  Serial.println("LoRa initialized successfully!");
+  Serial.println("LoRa initialized successfully!");*/
 
   screen.updateDisplayStatus("12:23", 2, 3);
   screen.showDisplay();
@@ -47,7 +49,7 @@ void loop() {
     screen.showDisplay();
   }*/
 
-  char key = customKeypad.getKey();
+  char key = keyman.GetKey();
   
   if (key){
     Serial.println(key);
